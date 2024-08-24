@@ -96,31 +96,96 @@ document.addEventListener("DOMContentLoaded", function() {
             "cover": "./new.jpg"
         }
     ];
+    const favSongs=[
+        [
+            {
+                "name": "ringtone",
+                "url": "./favMusic/file1.mp3",
+                "cover": "./new.jpg"
+            },
+            {
+                "name": "saripotha sanivaram",
+                "url": "./favMusic/file2.mp3",
+                "cover": "./new.jpg"
+            },
+            {
+                "name": "hi nanna",
+                "url": "./favMusic/file3.mp3",
+                "cover": "./new.jpg"
+            },
+            {
+                "name": "jersey",
+                "url": "./favMusic/file4.mp3",
+                "cover": "./new.jpg"
+            },
+            {
+                "name": "hi nanna",
+                "url": "./favMusic/file5.mp3",
+                "cover": "./new.jpg"
+            },
+            {
+                "name": "sita ramam",
+                "url": "./favMusic/file6.mp3",
+                "cover": "./new.jpg"
+            },
+            {
+                "name": "salaar",
+                "url": "./favMusic/file7.mp3",
+                "cover": "./new.jpg"
+            },
+            {
+                "name": "hi nanna",
+                "url": "./favMusic/file8.mp3",
+                "cover": "./new.jpg"
+            },
+            {
+                "name": "salaar",
+                "url": "./favMusic/file9.mp3",
+                "cover": "./new.jpg"
+            },
+            {
+                "name": "ringtone",
+                "url": "./favMusic/file10.mp3",
+                "cover": "./new.jpg"
+            }
+        ]
+        
+    ];
 
-    function createMusicCard(song) {
-        // Create card elements
+    function createMusicCard(song, index) {
         const card = document.createElement('div');
         card.classList.add('music-card');
-        card.classList.add('col-2');
-
+        card.dataset.index = index;
+    
         const cardInner = document.createElement('div');
         cardInner.classList.add('music-card-inner');
-
+    
         const img = document.createElement('img');
         img.src = song.cover;
         img.alt = song.name;
-
+    
         const title = document.createElement('h6');
         title.textContent = song.name;
-
-        // Append elements
+    
+        // Create the play button
+        const playButton = document.createElement('i');
+        playButton.classList.add('fas', 'fa-play', 'play-button');
+    
+        // Add click event listener to the image
+        img.addEventListener('click', () => {
+            playSong(index);
+        });
+    
         cardInner.appendChild(img);
+        cardInner.appendChild(playButton);
         cardInner.appendChild(title);
         card.appendChild(cardInner);
-
+    
         return card;
     }
 
+    
+    x
     function loadMusicCards() {
         const container = document.getElementById('music-container');
         musicData.forEach(song => {
@@ -130,4 +195,49 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     loadMusicCards();
+});
+
+// music player
+document.addEventListener("DOMContentLoaded", function() {
+    const audioPlayer = document.getElementById('audio-player');
+    const playPauseButton = document.getElementById('play-pause');
+    const currentTimeElement = document.getElementById('current-time');
+    const durationElement = document.getElementById('duration');
+    const volumeControl = document.getElementById('volume-control');
+    let isPlaying = false;
+
+    playPauseButton.addEventListener('click', function() {
+        if (isPlaying) {
+            audioPlayer.pause();
+            playPauseButton.innerHTML = '<i class="fas fa-play"></i>';
+        } else {
+            audioPlayer.play();
+            playPauseButton.innerHTML = '<i class="fas fa-pause"></i>';
+        }
+        isPlaying = !isPlaying;
+    });
+
+    audioPlayer.addEventListener('timeupdate', function() {
+        const currentTime = Math.floor(audioPlayer.currentTime);
+        const minutes = Math.floor(currentTime / 60);
+        const seconds = currentTime % 60;
+        currentTimeElement.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+    });
+
+    audioPlayer.addEventListener('loadedmetadata', function() {
+        const duration = Math.floor(audioPlayer.duration);
+        const minutes = Math.floor(duration / 60);
+        const seconds = duration % 60;
+        durationElement.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+    });
+
+    volumeControl.addEventListener('click', function() {
+        if (audioPlayer.muted) {
+            audioPlayer.muted = false;
+            volumeControl.innerHTML = '<i class="fas fa-volume-up"></i>';
+        } else {
+            audioPlayer.muted = true;
+            volumeControl.innerHTML = '<i class="fas fa-volume-mute"></i>';
+        }
+    });
 });

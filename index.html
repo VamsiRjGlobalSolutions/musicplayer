@@ -9,7 +9,10 @@
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
+        /* Existing styles */
         .scrollable-div {
             overflow-x: auto;
             white-space: nowrap;
@@ -22,29 +25,55 @@
         }
 
         .music-card {
-            display: inline-block;
-            width: 200px;
-            height: 44vh;
-            border: 2px solid red;
-            margin-right: 10px;
-            border-radius: 3%;
             position: relative;
-            padding: 10px;
-            background-color: #293a47;
-            color: white;
-            cursor: pointer; /* Change cursor to pointer to indicate clickable area */
+            display: inline-block;
+            width: 150px;
+            height: 35vh;
+            margin-right: 8px;
+            border-radius: 3%;
+            padding: 8px;
+            cursor: pointer;
+            overflow: hidden;
         }
 
         .music-card img {
             width: 100%;
-            height: 35vh;
+            height: 27vh;
             border-radius: 5%;
-            box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.5);
+            transition: opacity 0.3s ease;
+        }
+
+        .music-card .play-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 40px;
+            color: white;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .music-card:hover .play-button {
+            opacity: 1;
+        }
+
+        .music-card:hover img {
+            opacity: 0.7;
+        }
+
+
+        .music-card img {
+            width: 100%;
+            height: 27vh;
+            border-radius: 5%;
+            box-shadow: 8px 8px 12px rgba(0, 0, 0, 0.5);
         }
 
         .music-card h6 {
-            margin: 10px 0 0;
+            margin: 8px 0 0;
             color: white;
+            font-size: 12px;
         }
 
         .music-card .controls {
@@ -91,34 +120,294 @@
             flex-direction: column;
             align-items: center;
         }
+
         #music-player {
             width: 100%;
-           
             border: none;
         }
 
-       
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #1c1c1c;
+        }
 
-       
+        .player-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #2a2a2a;
+            padding: 3px;
+            color: #fff;
+        }
+
+        .song-info {
+            display: flex;
+            align-items: center;
+        }
+
+        .song-info img {
+            width: 50px;
+            height: 50px;
+            border-radius: 4px;
+            margin-right: 10px;
+        }
+
+        .song-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .song-title {
+            font-size: 14px;
+            font-weight: bold;
+            margin: 0;
+        }
+
+        .song-artist {
+            font-size: 12px;
+            color: #b3b3b3;
+            margin: 0;
+        }
+
+        .controls {
+            display: flex;
+            align-items: center;
+        }
+
+        .controls button {
+            background: none;
+            border: none;
+            margin: 0 5px;
+            cursor: pointer;
+            color: #fff;
+            font-size: 20px;
+        }
+
+        .extra-controls {
+            display: flex;
+            align-items: center;
+        }
+
+        .extra-controls button {
+            background: none;
+            border: none;
+            margin: 0 5px;
+            cursor: pointer;
+            color: #fff;
+            font-size: 12px;
+        }
+
+        .extra-controls .new-label {
+            background-color: #ffc107;
+            color: #000;
+            border-radius: 2px;
+            padding: 2px 4px;
+            font-size: 10px;
+            margin-right: 4px;
+        }
+
+        .extra-controls .time {
+            margin: 0 10px;
+        }
+
+        .extra-controls .time span {
+            font-size: 12px;
+            color: #b3b3b3;
+        }
+
+        .extra-controls .auto {
+            background-color: #ff4081;
+            border-radius: 2px;
+            padding: 4px 8px;
+            color: #fff;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .extra-controls button i {
+            font-size: 20px;
+            margin-left: 5px;
+        }
+
+        .secheading {
+            color: white;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: #1d1d1d;
+            /* Dark background color */
+        }
+
+        .navbar-left {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo {
+            width: 40px;
+            /* Adjust size as needed */
+            height: 40px;
+            /* Adjust size as needed */
+            margin-right: 10px;
+        }
+
+        .navbar-title {
+            color: white;
+            font-size: 20px;
+        }
+
+        .navbar-right {
+            display: flex;
+            align-items: center;
+        }
+
+        .search-bar {
+            display: flex;
+            align-items: center;
+            background-color: #2b2b2b;
+            /* Slightly lighter background */
+            border-radius: 25px;
+            padding: 5px 10px;
+        }
+
+        .search-bar i {
+            color: #a8a8a8;
+            /* Color for search icon */
+            margin-right: 5px;
+        }
+
+        .search-bar input {
+            border: none;
+            outline: none;
+            background: none;
+            color: #a8a8a8;
+            /* Text color */
+            font-size: 14px;
+        }
+
+        .search-bar input::placeholder {
+            color: #a8a8a8;
+            /* Placeholder text color */
+        }
     </style>
 </head>
 
 <body>
-    <div class="container-fluid mt-5">
+    <nav class="navbar  fixed-top">
+        <div class="navbar-left">
+            <img src="logo.png" alt="Logo" class="logo">
+            <span class="navbar-title">Wynk Music</span>
+        </div>
+        <div class="navbar-right">
+            <div class="search-bar">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Search Songs">
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid mt-5 pt-3">
+        <h6 class="secheading">New Releases</h6>
         <div class="scrollable-div" id="music-container">
             <!-- Music cards will be inserted here by JavaScript -->
         </div>
     </div>
 
+    <!-- New Section for Favorite Songs -->
+    <div class="container-fluid pb-5">
+        <h6 class="secheading">Favorite Songs</h6>
+        <div class="scrollable-div" id="favorites-container">
+            <!-- Favorite music cards will be inserted here by JavaScript -->
+        </div>
+    </div>
+
     <!-- Audio element to play the selected music -->
-    <audio id="music-player" controls>
-        <source id="audio-source" src="" type="audio/mp3">
-        Your browser does not support the audio element.
-    </audio>
+    <div class="player-bar fixed-bottom">
+        <div class="song-info">
+            <img src="https://via.placeholder.com/50" alt="Song Thumbnail">
+            <div class="song-details">
+                <p class="song-title">WE PRAY</p>
+                <p class="song-artist">Coldplay, Little Simz, Burna Boy, Elyanna, TINI</p>
+            </div>
+        </div>
+        <div class="controls">
+            <button id="shuffle" class="shuffle"><i class="fas fa-random"></i></button>
+            <button id="prev" class="prev"><i class="fas fa-backward"></i></button>
+            <button id="play-pause" class="play-pause"><i class="fas fa-play"></i></button>
+            <button id="next" class="next"><i class="fas fa-forward"></i></button>
+            <button id="repeat" class="repeat"><i class="fas fa-redo-alt"></i></button>
+        </div>
+        <div class="extra-controls">
+            <button class="lyrics"><span class="new-label">New</span> <i class="fas fa-comment-alt"></i></button>
+            <button class="download"><i class="fas fa-download"></i></button>
+            <div class="time">
+                <span id="current-time">00:00</span> / <span id="duration">03:53</span>
+            </div>
+            <button class="auto"><span>Auto</span></button>
+            <button id="volume-control" class="volume"><i class="fas fa-volume-up"></i></button>
+            <button class="playlist"><i class="fas fa-list-ul"></i></button>
+        </div>
+    </div>
+
+    <!-- Audio Element -->
+    <audio id="audio-player" src=""></audio>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const musicData = [
+        function createMusicCard(song, index, section) {
+            const card = document.createElement('div');
+            card.classList.add('music-card');
+            card.dataset.index = index;
+            card.dataset.section = section;
+
+            const cardInner = document.createElement('div');
+            cardInner.classList.add('music-card-inner');
+
+            const img = document.createElement('img');
+            img.src = song.cover;
+            img.alt = song.name;
+
+            const title = document.createElement('h6');
+            title.textContent = song.name;
+
+            // Create the play button
+            const playButton = document.createElement('div');
+            playButton.className = 'play-button';
+
+            const playIcon = document.createElement('i');
+            playIcon.className = 'fas fa-play';
+
+            const playText = document.createElement('span');
+            playText.textContent = 'Play';
+
+            playButton.appendChild(playIcon);
+            playButton.appendChild(playText);
+
+            // Add click event listener to the card
+            card.addEventListener('click', () => {
+                playSong(index, section);
+            });
+
+            cardInner.appendChild(img);
+            cardInner.appendChild(playButton);
+            cardInner.appendChild(title);
+            card.appendChild(cardInner);
+
+            return card;
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const newReleasesData = [
                 {
                     "name": "Canon in D",
                     "url": "http://www.archive.org/download/CanonInD_261/CanoninD.mp3",
@@ -216,10 +505,74 @@
                 }
             ];
 
-            function createMusicCard(song) {
-                // Create card elements
+            const favoriteSongsData = [
+                {
+                    "name": "Arjun Reddy",
+                    "url": "./favMusic/file1.mp3",
+                    "cover": "./new2.jpg"
+                },
+                {
+                    "name": "ringtone",
+                    "url": "./favMusic/file2.mp3",
+                    "cover": "./new2.jpg"
+                },
+                {
+                    "name": "saripotha sanivaram",
+                    "url": "./favMusic/file3.mp3",
+                    "cover": "./new2.jpg"
+                },
+                {
+                    "name": "hi nanna",
+                    "url": "./favMusic/file4.mp3",
+                    "cover": "./new2.jpg"
+                },
+                {
+                    "name": "jersey",
+                    "url": "./favMusic/file5.mp3",
+                    "cover": "./new2.jpg"
+                },
+                {
+                    "name": "hi nanna",
+                    "url": "./favMusic/file6.mp3",
+                    "cover": "./new2.jpg"
+                },
+                {
+                    "name": "sita ramam",
+                    "url": "./favMusic/file7.mp3",
+                    "cover": "./new2.jpg"
+                },
+                {
+                    "name": "salaar",
+                    "url": "./favMusic/file8.mp3",
+                    "cover": "./new2.jpg"
+                },
+                {
+                    "name": "hi nanna",
+                    "url": "./favMusic/file9.mp3",
+                    "cover": "./new2.jpg"
+                },
+                {
+                    "name": "salaar",
+                    "url": "./favMusic/file10.mp3",
+                    "cover": "./new2.jpg"
+                },
+                {
+                    "name": "ringtone",
+                    "url": "./favMusic/file11.mp3",
+                    "cover": "./new2.jpg"
+                }
+            ];
+
+
+            let currentSongIndex = 0;
+            let isPlaying = false;
+            let isShuffle = false;
+
+            function createMusicCard(song, index, section) {
                 const card = document.createElement('div');
                 card.classList.add('music-card');
+                card.dataset.index = index;
+                card.dataset.section = section;
 
                 const cardInner = document.createElement('div');
                 cardInner.classList.add('music-card-inner');
@@ -231,39 +584,99 @@
                 const title = document.createElement('h6');
                 title.textContent = song.name;
 
-                const urlPara = document.createElement('p');
-                urlPara.textContent = song.url;
-                urlPara.style.display = 'none'; // Hide the URL paragraph
-
                 // Add click event listener to the image
                 img.addEventListener('click', () => {
-                    const audioPlayer = document.getElementById('music-player');
-                    const audioSource = document.getElementById('audio-source');
-                    audioSource.src = song.url;
-                    audioPlayer.load(); // Reload the audio element to update the source
-                    audioPlayer.play(); // Start playing the audio
+                    playSong(index, section);
                 });
 
-                // Append elements
                 cardInner.appendChild(img);
                 cardInner.appendChild(title);
-                cardInner.appendChild(urlPara);
                 card.appendChild(cardInner);
 
                 return card;
             }
 
-            function loadMusicCards() {
-                const container = document.getElementById('music-container');
-                musicData.forEach(song => {
-                    const card = createMusicCard(song);
-                    container.appendChild(card);
-                });
+            function playSong(index, section) {
+                const songData = section === 'newReleases' ? newReleasesData : favoriteSongsData;
+                const audioPlayer = document.getElementById('audio-player');
+                audioPlayer.src = songData[index].url;
+                audioPlayer.play();
+                isPlaying = true;
+                updatePlayerInfo(index, section);
             }
 
-            loadMusicCards();
+            function updatePlayerInfo(index, section) {
+                const songTitle = document.querySelector('.song-title');
+                const songArtist = document.querySelector('.song-artist');
+                const songCover = document.querySelector('.song-info img');
+
+                const songData = section === 'newReleases' ? newReleasesData : favoriteSongsData;
+                songTitle.textContent = songData[index].name;
+                songArtist.textContent = "Artist Info Here"; // Replace with actual artist info if available
+                songCover.src = songData[index].cover;
+
+                currentSongIndex = index;
+            }
+
+            function togglePlayPause() {
+                const audioPlayer = document.getElementById('audio-player');
+                const playPauseButton = document.getElementById('play-pause');
+                if (isPlaying) {
+                    audioPlayer.pause();
+                    playPauseButton.innerHTML = '<i class="fas fa-play"></i>';
+                } else {
+                    audioPlayer.play();
+                    playPauseButton.innerHTML = '<i class="fas fa-pause"></i>';
+                }
+                isPlaying = !isPlaying;
+            }
+
+            function playPreviousSong() {
+                if (isShuffle) {
+                    playSong(Math.floor(Math.random() * newReleasesData.length), 'newReleases');
+                } else {
+                    const prevIndex = (currentSongIndex - 1 + newReleasesData.length) % newReleasesData.length;
+                    playSong(prevIndex, 'newReleases');
+                }
+            }
+
+            function playNextSong() {
+                if (isShuffle) {
+                    playSong(Math.floor(Math.random() * newReleasesData.length), 'newReleases');
+                } else {
+                    const nextIndex = (currentSongIndex + 1) % newReleasesData.length;
+                    playSong(nextIndex, 'newReleases');
+                }
+            }
+
+            function toggleShuffle() {
+                isShuffle = !isShuffle;
+                const shuffleButton = document.getElementById('shuffle');
+                shuffleButton.classList.toggle('active', isShuffle);
+            }
+
+            document.getElementById('play-pause').addEventListener('click', togglePlayPause);
+            document.getElementById('prev').addEventListener('click', playPreviousSong);
+            document.getElementById('next').addEventListener('click', playNextSong);
+            document.getElementById('shuffle').addEventListener('click', toggleShuffle);
+
+            // Create and append music cards for New Releases
+            const musicContainer = document.getElementById('music-container');
+            newReleasesData.forEach((song, index) => {
+                const musicCard = createMusicCard(song, index, 'newReleases');
+                musicContainer.appendChild(musicCard);
+            });
+
+            // Create and append music cards for Favorite Songs
+            const favoritesContainer = document.getElementById('favorites-container');
+            favoriteSongsData.forEach((song, index) => {
+                const musicCard = createMusicCard(song, index, 'favoriteSongs');
+                favoritesContainer.appendChild(musicCard);
+            });
         });
+
     </script>
+
 </body>
 
 </html>
